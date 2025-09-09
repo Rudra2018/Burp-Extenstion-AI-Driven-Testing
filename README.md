@@ -1,6 +1,6 @@
 # 🤖 AI-Driven Security Testing Extension for Burp Suite
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/your-repo/ai-burp-extension)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/Rudra2018/ai-burp-extension)
 [![Java](https://img.shields.io/badge/java-11%2B-orange.svg)](https://openjdk.java.net/projects/jdk/11/)
 [![Burp Suite](https://img.shields.io/badge/Burp%20Suite-Professional%2FCommunity-red.svg)](https://portswigger.net/burp)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -63,10 +63,10 @@ A comprehensive AI-driven security testing extension that transforms Burp Suite 
 1. **Download the latest release**:
    ```bash
    # Download from GitHub Releases
-   wget https://github.com/your-repo/ai-burp-extension/releases/download/v2.0.0/ai-security-extension-2.0.0.jar
+   wget https://github.com/Rudra2018/ai-burp-extension/releases/download/v2.0.0/ai-security-extension-2.0.0.jar
    
    # Or download directly:
-   curl -L -o ai-security-extension-2.0.0.jar "https://github.com/your-repo/ai-burp-extension/releases/download/v2.0.0/ai-security-extension-2.0.0.jar"
+   curl -L -o ai-security-extension-2.0.0.jar "https://github.com/Rudra2018/ai-burp-extension/releases/download/v2.0.0/ai-security-extension-2.0.0.jar"
    ```
 
 2. **Install in Burp Suite**:
@@ -86,7 +86,7 @@ A comprehensive AI-driven security testing extension that transforms Burp Suite 
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-repo/ai-burp-extension.git
+   git clone https://github.com/Rudra2018/ai-burp-extension.git
    cd Burp-Extenstion-AI-Driven-Testing
    ```
 
@@ -690,7 +690,7 @@ We welcome contributions from the security community!
 
 ```bash
 # 1. Clone and setup
-git clone https://github.com/your-repo/ai-burp-extension.git
+git clone https://github.com/Rudra2018/ai-burp-extension.git
 cd Burp-Extenstion-AI-Driven-Testing
 
 # 2. Install dependencies
@@ -820,13 +820,13 @@ This tool is provided for educational and authorized security testing purposes o
 ### **Getting Help**
 
 #### **Documentation**
-- 📖 **[Wiki](https://github.com/your-repo/ai-burp-extension/wiki)**: Comprehensive documentation
-- 📚 **[API Reference](https://github.com/your-repo/ai-burp-extension/wiki/API)**: Developer documentation
-- 🎥 **[Video Tutorials](https://github.com/your-repo/ai-burp-extension/wiki/Tutorials)**: Step-by-step guides
+- 📖 **[Wiki](https://github.com/Rudra2018/ai-burp-extension/wiki)**: Comprehensive documentation
+- 📚 **[API Reference](https://github.com/Rudra2018/ai-burp-extension/wiki/API)**: Developer documentation
+- 🎥 **[Video Tutorials](https://github.com/Rudra2018/ai-burp-extension/wiki/Tutorials)**: Step-by-step guides
 
 #### **Community Support**
-- 💬 **[GitHub Discussions](https://github.com/your-repo/ai-burp-extension/discussions)**: Community Q&A
-- 🐛 **[GitHub Issues](https://github.com/your-repo/ai-burp-extension/issues)**: Bug reports and feature requests
+- 💬 **[GitHub Discussions](https://github.com/Rudra2018/ai-burp-extension/discussions)**: Community Q&A
+- 🐛 **[GitHub Issues](https://github.com/Rudra2018/ai-burp-extension/issues)**: Bug reports and feature requests
 - 💼 **[LinkedIn](https://linkedin.com/company/ai-security-extension)**: Professional updates
 - 🐦 **[Twitter](https://twitter.com/ai_security_ext)**: News and announcements
 
@@ -942,4 +942,4 @@ We take security seriously and will respond promptly to legitimate security repo
 
 **Ready to get started?** Download the latest release and experience the future of automated security testing.
 
-*For questions, support, or contributions, please visit our [GitHub repository](https://github.com/your-repo/ai-burp-extension).*
+*For questions, support, or contributions, please visit our [GitHub repository](https://github.com/Rudra2018/ai-burp-extension).*
