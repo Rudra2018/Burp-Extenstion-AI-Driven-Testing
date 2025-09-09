@@ -8,10 +8,14 @@ version = "2.0.0"
 
 repositories {
     mavenCentral()
+    maven {
+        name = "PortSwigger"
+        url = uri("https://releases.portswigger.net/maven/")
+    }
 }
 
 dependencies {
-    // Essential libraries for demonstration (without Burp API)
+    // Essential libraries for demonstration
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2")
@@ -29,6 +33,9 @@ dependencies {
 // Create the extension JAR
 tasks.shadowJar {
     archiveFileName.set("ai-security-extension-${version}.jar")
+    manifest {
+        attributes["Main-Class"] = "com.secure.ai.burp.AISecurityExtension"
+    }
     
     // Exclude conflicting files
     exclude("META-INF/*.SF")
@@ -41,17 +48,22 @@ tasks.shadowJar {
 
 // Configure Java compilation
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 tasks.compileJava {
     options.encoding = "UTF-8"
-    // Ignore missing Burp API for demonstration
-    options.compilerArgs.add("-Xlint:-path")
 }
 
-// Skip tests for this demo build
+// Configure jar task to include the main class
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "com.secure.ai.burp.AISecurityExtension"
+    }
+}
+
 tasks.test {
-    enabled = false
+    useJUnitPlatform()
 }
