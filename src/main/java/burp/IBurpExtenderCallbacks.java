@@ -13,4 +13,10 @@ public interface IBurpExtenderCallbacks {
     OutputStream getStderr();
     void printOutput(String output);
     void printError(String error);
+    
+    // Additional methods needed by agents
+    IScanIssue[] getScanIssues(String urlPrefix);
+    IHttpRequestResponse[] getProxyHistory();
+    IExtensionHelpers getHelpers();
+    IHttpRequestResponse makeHttpRequest(IHttpService httpService, byte[] request);
 }

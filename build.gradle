@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.secure.ai.burp'
-version = '2.0.0-enterprise'
+version = '3.0.0-agentic'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -16,7 +16,10 @@ repositories {
 }
 
 dependencies {
-    // No external dependencies needed for simplified version
+    // JSON processing for payload generation
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
 }
 
 compileJava {
@@ -25,7 +28,7 @@ compileJava {
 }
 
 shadowJar {
-    archiveFileName = "ai-burp-security-extension-enterprise-${version}.jar"
+    archiveFileName = "ai-burp-extension-agentic-${version}.jar"
     mergeServiceFiles()
     
     // Exclude problematic files
@@ -40,16 +43,19 @@ shadowJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// Create simplified JAR with just the working extension
-task simpleJar(type: Jar) {
-    archiveFileName = "ai-burp-extension-simple-${version}.jar"
+// Create agentic extension JAR
+task agenticJar(type: Jar) {
+    archiveFileName = "ai-burp-extension-agentic-${version}.jar"
     from sourceSets.main.output
-    include 'com/secure/ai/burp/SimplifiedEnterpriseExtension*.class'
+    include 'com/secure/ai/burp/AgenticSecurityExtension*.class'
+    include 'com/secure/ai/burp/agents/**'
+    include 'com/secure/ai/burp/payload/**'
+    include 'burp/**'
     
     manifest {
         attributes(
-            'Main-Class': 'com.secure.ai.burp.SimplifiedEnterpriseExtension',
-            'Implementation-Title': 'AI-Powered Security Testing Extension',
+            'Main-Class': 'com.secure.ai.burp.AgenticSecurityExtension',
+            'Implementation-Title': 'AI-Powered Agentic Security Testing Extension v3.0',
             'Implementation-Version': version,
             'Implementation-Vendor': 'Secure AI Labs'
         )
@@ -57,6 +63,5 @@ task simpleJar(type: Jar) {
 }
 
 build {
-    dependsOn shadowJar
-    finalizedBy simpleJar
+    finalizedBy agenticJar
 }

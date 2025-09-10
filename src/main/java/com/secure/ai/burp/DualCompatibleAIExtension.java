@@ -1,6 +1,7 @@
 package com.secure.ai.burp;
 
 import burp.*;
+import com.secure.ai.burp.payload.PayloadGeneratorAgent;
 import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
@@ -42,6 +43,9 @@ public class DualCompatibleAIExtension implements IBurpExtender, ITab, IProxyLis
     // Security Events Storage
     private final ConcurrentHashMap<String, SecurityEvent> securityEvents = new ConcurrentHashMap<>();
     
+    // Payload Generation System
+    private PayloadGeneratorAgent payloadGenerator;
+    
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         this.callbacks = callbacks;
@@ -51,6 +55,9 @@ public class DualCompatibleAIExtension implements IBurpExtender, ITab, IProxyLis
         
         // Set extension name
         callbacks.setExtensionName(EXTENSION_NAME);
+        
+        // Initialize payload generation system
+        this.payloadGenerator = new PayloadGeneratorAgent();
         
         // Register legacy API handlers
         callbacks.registerProxyListener(this);
@@ -118,6 +125,9 @@ public class DualCompatibleAIExtension implements IBurpExtender, ITab, IProxyLis
         
         // Performance Comparison
         tabPanel.add("Performance", createPerformancePanel());
+        
+        // Intelligent Payload Generation
+        tabPanel.add("Payload Generator", createPayloadGeneratorPanel());
         
         mainPanel.add(tabPanel, BorderLayout.CENTER);
         
@@ -355,6 +365,181 @@ public class DualCompatibleAIExtension implements IBurpExtender, ITab, IProxyLis
         panel.add(performanceScroll, BorderLayout.CENTER);
         
         return panel;
+    }
+    
+    private JPanel createPayloadGeneratorPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        
+        // Input panel
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Payload Generation Configuration"));
+        
+        gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST; gbc.insets = new Insets(5, 5, 5, 5);
+        inputPanel.add(new JLabel("Target URL:"), gbc);
+        
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0;
+        JTextField urlField = new JTextField("https://example.com/api/endpoint");
+        inputPanel.add(urlField, gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 1; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0;
+        inputPanel.add(new JLabel("Vulnerability Types:"), gbc);
+        
+        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0;
+        JPanel checkboxPanel = new JPanel(new GridLayout(2, 5, 5, 5));
+        
+        JCheckBox sqliBox = new JCheckBox("SQL Injection", true);
+        JCheckBox xssBox = new JCheckBox("XSS", true);
+        JCheckBox rceBox = new JCheckBox("RCE", false);
+        JCheckBox ssrfBox = new JCheckBox("SSRF", false);
+        JCheckBox xxeBox = new JCheckBox("XXE", false);
+        JCheckBox csrfBox = new JCheckBox("CSRF", false);
+        JCheckBox lfiBox = new JCheckBox("LFI", false);
+        JCheckBox idorBox = new JCheckBox("IDOR", false);
+        JCheckBox deserBox = new JCheckBox("Deserialization", false);
+        JCheckBox bizLogicBox = new JCheckBox("Business Logic", false);
+        
+        checkboxPanel.add(sqliBox);
+        checkboxPanel.add(xssBox);
+        checkboxPanel.add(rceBox);
+        checkboxPanel.add(ssrfBox);
+        checkboxPanel.add(xxeBox);
+        checkboxPanel.add(csrfBox);
+        checkboxPanel.add(lfiBox);
+        checkboxPanel.add(idorBox);
+        checkboxPanel.add(deserBox);
+        checkboxPanel.add(bizLogicBox);
+        
+        inputPanel.add(checkboxPanel, gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 2; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0;
+        inputPanel.add(new JLabel("Evolution Enabled:"), gbc);
+        
+        gbc.gridx = 1;
+        JCheckBox evolutionBox = new JCheckBox("Apply genetic algorithm optimization", true);
+        inputPanel.add(evolutionBox, gbc);
+        
+        panel.add(inputPanel, BorderLayout.NORTH);
+        
+        // Output area
+        JTextArea payloadOutput = new JTextArea(20, 80);
+        payloadOutput.setEditable(false);
+        payloadOutput.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
+        payloadOutput.setBackground(new Color(248, 248, 248));
+        
+        JScrollPane outputScroll = new JScrollPane(payloadOutput);
+        outputScroll.setBorder(BorderFactory.createTitledBorder("Generated Payloads (JSON Output)"));
+        panel.add(outputScroll, BorderLayout.CENTER);
+        
+        // Control buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        
+        JButton generateButton = new JButton("Generate Intelligent Payloads");
+        generateButton.addActionListener(e -> {
+            String targetUrl = urlField.getText();
+            if (targetUrl.isEmpty()) {
+                JOptionPane.showMessageDialog(panel, "Please enter a target URL", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Show loading
+            generateButton.setEnabled(false);
+            generateButton.setText("Generating...");
+            payloadOutput.setText("🔄 Generating context-aware payloads with AI analysis...\n");
+            
+            executorService.submit(() -> {
+                try {
+                    // Simulate analysis context
+                    String analysisJson = createMockAnalysisContext(targetUrl);
+                    
+                    // Extract headers from context (simplified)
+                    Map<String, String> headers = extractHeadersFromUrl(targetUrl);
+                    
+                    // Generate payloads
+                    String payloadsJson = payloadGenerator.generatePayloads(analysisJson, targetUrl, headers);
+                    
+                    SwingUtilities.invokeLater(() -> {
+                        payloadOutput.setText("🎯 INTELLIGENT PAYLOAD GENERATION RESULTS:\n\n" + payloadsJson);
+                        generateButton.setEnabled(true);
+                        generateButton.setText("Generate Intelligent Payloads");
+                        
+                        logAnalysisResult("Payload Generator", "Generated " + countPayloads(payloadsJson) + " context-aware payloads");
+                    });
+                    
+                } catch (Exception ex) {
+                    SwingUtilities.invokeLater(() -> {
+                        payloadOutput.setText("❌ Error generating payloads: " + ex.getMessage());
+                        generateButton.setEnabled(true);
+                        generateButton.setText("Generate Intelligent Payloads");
+                    });
+                }
+            });
+        });
+        buttonPanel.add(generateButton);
+        
+        JButton clearButton = new JButton("Clear Output");
+        clearButton.addActionListener(e -> payloadOutput.setText(""));
+        buttonPanel.add(clearButton);
+        
+        JButton exportButton = new JButton("Export JSON");
+        exportButton.addActionListener(e -> {
+            String content = payloadOutput.getText();
+            if (content.isEmpty()) {
+                JOptionPane.showMessageDialog(panel, "No payloads to export", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Simple export to system clipboard
+            java.awt.Toolkit.getDefaultToolkit().getSystemClipboard()
+                .setContents(new java.awt.datatransfer.StringSelection(content), null);
+            JOptionPane.showMessageDialog(panel, "Payloads exported to clipboard", "Success", JOptionPane.INFORMATION_MESSAGE);
+        });
+        buttonPanel.add(exportButton);
+        
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        
+        return panel;
+    }
+    
+    private String createMockAnalysisContext(String targetUrl) {
+        // Create a simple analysis context for payload generation
+        return "{\n" +
+               "  \"target\": \"" + targetUrl + "\",\n" +
+               "  \"analysis_type\": \"comprehensive\",\n" +
+               "  \"detected_technologies\": {\n" +
+               "    \"language\": \"Unknown\",\n" +
+               "    \"framework\": \"Unknown\",\n" +
+               "    \"database\": \"Unknown\",\n" +
+               "    \"web_server\": \"Unknown\"\n" +
+               "  },\n" +
+               "  \"vulnerabilities_found\": [],\n" +
+               "  \"endpoints_discovered\": [\"" + targetUrl + "\"],\n" +
+               "  \"security_headers\": {},\n" +
+               "  \"timestamp\": " + System.currentTimeMillis() + "\n" +
+               "}";
+    }
+    
+    private Map<String, String> extractHeadersFromUrl(String url) {
+        Map<String, String> headers = new HashMap<>();
+        
+        // Extract basic info from URL
+        if (url.contains(".php")) {
+            headers.put("X-Powered-By", "PHP");
+        } else if (url.contains(".aspx")) {
+            headers.put("X-Powered-By", "ASP.NET");
+        } else if (url.contains(".jsp")) {
+            headers.put("X-Powered-By", "JSP/Servlet");
+        }
+        
+        // Add some default headers
+        headers.put("Server", "Unknown");
+        headers.put("Content-Type", "text/html");
+        
+        return headers;
+    }
+    
+    private int countPayloads(String payloadsJson) {
+        // Simple payload counting (count occurrences of "payload": )
+        return (payloadsJson.length() - payloadsJson.replace("\"payload\":", "").length()) / "\"payload\":".length();
     }
     
     private JPanel createControlPanel() {
